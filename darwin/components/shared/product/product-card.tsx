@@ -8,7 +8,7 @@ const ProductCard = ({ product }: { product: Product }) => {
   return (
     <Card className='w-full max-w-sm'>
       <CardHeader className='p-0 items-center'>
-        <Link href={`/products/${product.slug}`}>
+        <Link href={`/product/${product.slug}`}>
           <Image
             src={product.images[0]}
             alt={product.name}
