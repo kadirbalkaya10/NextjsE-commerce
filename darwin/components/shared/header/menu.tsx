@@ -35,15 +35,15 @@ const Menu = () => {
         <Sheet>
           <SheetTrigger className='align-middle'>
             <EllipsisVertical />
-            <SheetContent className='flex flex-col items-start'>
-              <SheetTitle className='m-3'>Menu</SheetTitle>
+            <SheetContent className='flex flex-col items-start p-3'>
+              <SheetTitle>Menu</SheetTitle>
               <ModeToggle />
-              <Button asChild variant='ghost' className='m-3'>
+              <Button asChild variant='ghost'>
                 <Link href='/cart'>
                   <ShoppingCartIcon /> Cart
                 </Link>
               </Button>
-              <Button asChild className='m-3'>
+              <Button asChild>
                 <Link href='/sign-in'>
                   <UserIcon /> Sign In
                 </Link>
