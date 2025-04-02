@@ -1,5 +1,6 @@
 "use server";
 import { PrismaClient } from "@prisma/client";
+import { convertToPlainObject } from "../utils";
 
 //Get latest Products
 
@@ -13,5 +14,5 @@ export async function getLatestProducts() {
     },
   });
 
-  return data;
+  return convertToPlainObject(data);
 }
