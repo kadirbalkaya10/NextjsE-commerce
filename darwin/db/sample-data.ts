@@ -1,3 +1,5 @@
+import { hashSync } from "bcrypt-ts-edge";
+
 interface Product {
   name: string;
   slug: string;
@@ -13,12 +15,26 @@ interface Product {
   banner: string | null;
 }
 
-const sampleData = {
-  user: [
+interface User {
+  name: string;
+  email: string;
+  password: string;
+  role: string;
+}
+
+const sampleData: { products: Product[]; users: User[] } = {
+  users: [
     {
       name: "Anakin",
       email: "admin@example.com",
-      password: "",
+      password: hashSync("123456", 10),
+      role: "admin",
+    },
+    {
+      name: "Obiwan",
+      email: "obiwan@example.com",
+      password: hashSync("123456", 10),
+      role: "user",
     },
   ],
   products: [
