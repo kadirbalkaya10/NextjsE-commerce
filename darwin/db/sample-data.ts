@@ -13,7 +13,14 @@ interface Product {
   banner: string | null;
 }
 
-const sampleData: { products: Product[] } = {
+const sampleData = {
+  user: [
+    {
+      name: "Anakin",
+      email: "admin@example.com",
+      password: "",
+    },
+  ],
   products: [
     {
       name: "Polo Sporting Stretch Shirt",
