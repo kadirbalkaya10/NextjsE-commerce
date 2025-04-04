@@ -3,7 +3,7 @@ import { signInFormSchema, signUpFormSchema } from "../validators";
 import { signIn, signOut } from "@/auth";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { hashSync } from "bcrypt-ts-edge";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/db/prisma";
 
 // Sign in user with credentials
 
