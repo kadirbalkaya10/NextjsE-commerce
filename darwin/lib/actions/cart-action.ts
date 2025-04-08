@@ -38,7 +38,7 @@ export async function addItemToCart(data: CartItem) {
     const userId = session?.user?.id ? (session.user.id as string) : undefined;
 
     //Get cart
-    const cart = await getMyCard();
+    const cart = await getMyCart();
 
     //Parse and validate item
     const item = cartItemSchema.parse(data);
@@ -117,7 +117,7 @@ export async function addItemToCart(data: CartItem) {
   }
 }
 
-export async function getMyCard() {
+export async function getMyCart() {
   //Check for session cart cookie
   const sessionCartId = (await cookies()).get("sessionCartId")?.value;
 
@@ -145,7 +145,7 @@ export async function getMyCard() {
   });
 }
 
-export async function removeItemFromCard(productId: string) {
+export async function removeItemFromCart(productId: string) {
   try {
     //Check for cart cookie
     const sessionCartId = (await cookies()).get("sessionCartId")?.value;
@@ -160,7 +160,7 @@ export async function removeItemFromCard(productId: string) {
     if (!product) throw new Error("Product not found!");
 
     // Get User Cart
-    const cart = await getMyCard();
+    const cart = await getMyCart();
     if (!cart) throw new Error("Cart not found!");
 
     // Check for item
@@ -182,8 +182,10 @@ export async function removeItemFromCard(productId: string) {
     //Update Cart in database
     await prisma.cart.update({
       where: { id: cart.id },
-      data: { items: cart.items as Prisma.CartUpdateitemsInput[] },
-      ...calcPrice(cart.items as CartItem[]),
+      data: {
+        items: cart.items as Prisma.CartUpdateitemsInput[],
+        ...calcPrice(cart.items as CartItem[]),
+      },
     });
 
     revalidatePath(`/product/${product.slug}`);
