@@ -1,11 +1,6 @@
 import { Button } from "@/components/ui/button";
 import ModeToggle from "./mode-toggle";
-import {
-  EllipsisVertical,
-  ShoppingCart,
-  ShoppingCartIcon,
-  UserIcon,
-} from "lucide-react";
+import { EllipsisVertical, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import {
   Sheet,
@@ -37,7 +32,7 @@ const Menu = () => {
               <ModeToggle />
               <Button asChild variant='ghost'>
                 <Link href='/cart'>
-                  <ShoppingCartIcon /> Cart
+                  <ShoppingCart /> Cart
                 </Link>
               </Button>
               <UserButton />
