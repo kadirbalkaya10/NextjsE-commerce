@@ -13,15 +13,17 @@ const AddToCart = ({ item }: { item: CartItem }) => {
     const response = await addItemToCart(item);
 
     if (!response.success) {
-      toast("We Could Not Add To Cart", {
+      toast.error("We could not add to cart", {
         description: response.message,
+        richColors: true,
       });
       return;
     }
     // Handle success add to cart
     toast.success("", {
       description: `${item.name} added to cart`,
-      style: { backgroundColor: "bg-green-500", color: "green" },
+      richColors: true,
+
       action: {
         label: "Go To Cart",
         onClick: () => {
