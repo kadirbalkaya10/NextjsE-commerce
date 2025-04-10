@@ -61,7 +61,7 @@ async function generateAccessToken() {
   return jsonData.access_token;
 }
 
-async function handleResponse(response) {
+async function handleResponse(response: Response) {
   if (response.ok) {
     return await response.json();
   } else {
