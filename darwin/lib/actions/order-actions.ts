@@ -7,7 +7,9 @@ import { getMyCart } from "./cart-action";
 import { getUserById } from "./user.actions";
 import { insertOrderSchema } from "../validators";
 import { prisma } from "@/db/prisma";
-import { CartItem } from "@/types";
+import { CartItem, PaymentResult } from "@/types";
+import { paypal } from "../paypal/paypal";
+import { revalidatePath } from "next/cache";
 
 //Create order and orderItems
 
@@ -110,4 +112,46 @@ export async function getOrderById(orderId: string) {
   });
 
   return convertToPlainObject(data);
+}
+
+// Create new Paypal Order
+
+export async function createPaypalOrder(orderId: string) {
+  try {
+    //Get Order from database
+    const order = await prisma.order.findFirst({
+      where: {
+        id: orderId,
+      },
+    });
+    if (order) {
+      //Create a new paypal order
+      const paypalOrder = await paypal.createOrder(Number(order.totalPrice));
+
+      //Update order with paypalOrderId
+      await prisma.order.update({
+        where: {
+          id: orderId,
+        },
+        data: {
+          paymentResult: {
+            id: paypalOrder.id,
+            emailAddress: "",
+            status: "",
+            pricePaid: 0,
+          },
+        },
+      });
+
+      return {
+        success: true,
+        message: "Item order created successfully",
+        data: paypalOrder.id,
+      };
+    } else {
+      throw new Error("Order not found");
+    }
+  } catch (error) {
+    return { success: false, message: formatError(error) };
+  }
 }
