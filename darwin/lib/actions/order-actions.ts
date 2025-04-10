@@ -100,11 +100,14 @@ export async function createOrder() {
 
 export async function getOrderById(orderId: string) {
   const data = await prisma.order.findFirst({
-    where: { id: orderId },
+    where: {
+      id: orderId,
+    },
     include: {
-      orderItems: true,
+      orderitems: true,
       user: { select: { name: true, email: true } },
     },
   });
+
   return convertToPlainObject(data);
 }
