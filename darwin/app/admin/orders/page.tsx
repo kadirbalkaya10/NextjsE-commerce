@@ -29,8 +29,6 @@ const AdminOrdersPage = async (props: {
   if (session?.user.role !== "admin") throw new Error("User is not authorized");
   const orders = await getAllOrders({ page: Number(page), limit: 8 });
 
-  console.log(orders);
-
   return (
     <div className='space-y-2'>
       <h2 className='bold'>Orders</h2>
