@@ -316,10 +316,16 @@ export async function getOrderSummary() {
     Array<{ month: string; totalSales: Prisma.Decimal }>
   >`SELECT to_char("createdAt", 'MM/YY') as "month", sum("totalPrice") as "totalSales" FROM "Order" GROUP BY to_char("createdAt", 'MM/YY')`;
 
-  const salesData: SalesDataType = salesDataRaw.map((entry) => ({
-    month: entry.month,
-    totalSales: Number(entry.totalSales),
-  }));
+  const salesData: SalesDataType = salesDataRaw
+    .map((entry) => ({
+      month: entry.month,
+      totalSales: Number(entry.totalSales),
+    }))
+    .sort((a, b) => {
+      const [monthA, yearA] = a.month.split("/").map(Number);
+      const [monthB, yearB] = b.month.split("/").map(Number);
+      return yearA - yearB || monthA - monthB; // Sort by year, then month
+    });
   // Get Latest sales
   const latestSales = await prisma.order.findMany({
     orderBy: { createdAt: "desc" },
