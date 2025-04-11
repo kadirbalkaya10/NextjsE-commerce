@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { requireAdmin } from "@/lib/auth-guard";
 import Link from "next/link";
-import { getAllProducts } from "@/lib/actions/product.actions";
+import { deleteProduct, getAllProducts } from "@/lib/actions/product.actions";
 import { formatCurrency, formatId } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,6 +13,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Pagination from "@/components/shared/pagination";
+import DeleteDialog from "@/components/shared/delete-dialog";
 
 export const metadata: Metadata = {
   title: "Admin Products",
@@ -32,8 +33,6 @@ const AdminProductPage = async (props: {
   await requireAdmin();
 
   const products = await getAllProducts({ query: searchText, page, category });
-
-  console.log(products);
 
   return (
     <div className='space-y-2'>
@@ -71,6 +70,7 @@ const AdminProductPage = async (props: {
                   <Link href={`/admin/products/${product.id}`}>Edit</Link>
                 </Button>
                 {/* DELETE */}
+                <DeleteDialog id={product.id} action={deleteProduct} />
               </TableCell>
             </TableRow>
           ))}
