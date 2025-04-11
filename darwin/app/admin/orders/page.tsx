@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import DeleteDialog from "@/components/shared/delete-dialog";
 
 export const metadata: Metadata = {
-  title: "Orders",
+  title: "Admin Orders",
 };
 
 const AdminOrdersPage = async (props: {
