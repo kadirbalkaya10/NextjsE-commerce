@@ -67,6 +67,7 @@ const ProductForm = ({
       } else {
         toast.success("", { description: res.message });
       }
+      router.push("/admin/products");
     }
   };
 
