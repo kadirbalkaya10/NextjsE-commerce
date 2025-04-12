@@ -21,17 +21,33 @@ export const metadata: Metadata = {
 };
 
 const AdminOrdersPage = async (props: {
-  searchParams: Promise<{ page: string }>;
+  searchParams: Promise<{ page: string; query: string }>;
 }) => {
   await requireAdmin();
-  const { page = "1" } = await props.searchParams;
+  const { page = "1", query: searchText } = await props.searchParams;
   const session = await auth();
   if (session?.user.role !== "admin") throw new Error("User is not authorized");
-  const orders = await getAllOrders({ page: Number(page), limit: 8 });
+  const orders = await getAllOrders({
+    page: Number(page),
+    limit: 8,
+    query: searchText,
+  });
 
   return (
     <div className='space-y-2'>
-      <h2 className='bold'>Orders</h2>
+      <div className='flex items-center gap-3'>
+        <h1 className='h2-bold'>Orders</h1>
+        {searchText && searchText !== "undefined" && (
+          <div>
+            Filtered by <i>&quot;{searchText}&quot;</i>{" "}
+            <Link href='/admin/orders'>
+              <Button variant='outline' size='sm'>
+                Remove filter
+              </Button>
+            </Link>
+          </div>
+        )}
+      </div>
       <div className='overflow-x-auto'>
         <Table>
           <TableHeader>
