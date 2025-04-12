@@ -37,6 +37,7 @@ const AdminOrdersPage = async (props: {
           <TableHeader>
             <TableRow>
               <TableHead>ID</TableHead>
+              <TableHead>NAME</TableHead>
               <TableHead>DATE</TableHead>
               <TableHead>TOTAL</TableHead>
               <TableHead>PAID</TableHead>
@@ -48,6 +49,7 @@ const AdminOrdersPage = async (props: {
             {orders.data.map((order) => (
               <TableRow key={order.id}>
                 <TableCell>{formatId(order.id)}</TableCell>
+                <TableCell>{order.user.name}</TableCell>
                 <TableCell>
                   {" "}
                   {formatDateTime(order.createdAt).dateTime}
