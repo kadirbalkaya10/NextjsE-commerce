@@ -39,7 +39,7 @@ const AdminProductPage = async (props: {
       <div className='flex-between'>
         <div className='flex items-center gap-3'>
           <h1 className='h2-bold'>Products</h1>
-          {searchText && (
+          {searchText && searchText !== "undefined" && (
             <div>
               Filtered by <i>&quot;{searchText}&quot;</i>{" "}
               <Link href='/admin/products'>
