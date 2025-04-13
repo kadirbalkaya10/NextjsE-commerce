@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 const OrderDetailPage = async (props: { params: Promise<{ id: string }> }) => {
   const { id } = await props.params;
 
-  const order = await getOrderById(id);
+  const order = await getOrderById(id.toString());
   if (!order) notFound();
 
   const session = await auth();
