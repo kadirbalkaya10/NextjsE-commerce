@@ -91,3 +91,18 @@ export async function getReviews({ productId }: { productId: string }) {
   });
   return { data };
 }
+
+// Get a review  written by current user
+
+export async function getReviewByProductId({
+  productId,
+}: {
+  productId: string;
+}) {
+  const session = await auth();
+  if (!session) throw new Error("User is not authenticated");
+
+  return await prisma.review.findFirst({
+    where: { productId: productId, userId: session?.user?.id },
+  });
+}
