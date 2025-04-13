@@ -7,6 +7,41 @@ import Link from "next/link";
 import { prices, ratings, sortProducts } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 
+// Generate Metadata
+export async function generateMetadata(props: {
+  searchParams: Promise<{
+    query: string;
+    category: string;
+    price: string;
+    rating: string;
+  }>;
+}) {
+  const {
+    query = "all",
+    category = "all",
+    price = "all",
+    rating = "all",
+  } = await props.searchParams;
+
+  const isQuerySet = query && query !== "all" && query.trim() !== "";
+  const isCategorySet =
+    category && category !== "all" && category.trim() !== "";
+  const isPriceSet = price && price !== "all" && price.trim() !== "";
+  const isRatingSet = rating && rating !== "all" && rating.trim() !== "";
+
+  if (isQuerySet || isCategorySet || isPriceSet || isRatingSet) {
+    return {
+      title: `
+        Search ${isQuerySet ? query : ""} 
+        ${isCategorySet ? `: Category ${category}` : ""}
+        ${isPriceSet ? `: Price ${price}` : ""}
+        ${isRatingSet ? `: Rating ${rating}` : ""} `,
+    };
+  } else {
+    return { title: "Search Products" };
+  }
+}
+
 const SearchPage = async (props: {
   searchParams: Promise<{
     query?: string;
