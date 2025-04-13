@@ -56,3 +56,7 @@ export const prices = [
     value: "505-1000",
   },
 ];
+
+//Rating
+
+export const ratings = [4, 3, 2, 1];
