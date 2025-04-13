@@ -64,3 +64,11 @@ export const ratings = [4, 3, 2, 1];
 //Sort Values
 
 export const sortProducts = ["newest", "lowest", "highest", "rating"];
+
+//Rating default values
+
+export const reviewFormDefaultValues = {
+  title: "",
+  comment: "",
+  rating: 0,
+};
