@@ -2,8 +2,19 @@
 
 import { Review } from "@/types";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ReviewForm from "./review-form";
+import { getReviews } from "@/lib/actions/review-actions";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Calendar1, UserIcon } from "lucide-react";
+import { formatDateTime } from "@/lib/utils";
+import Rating from "@/components/shared/product/rating";
 
 const ReviewList = ({
   userId,
@@ -15,6 +26,13 @@ const ReviewList = ({
   productSlug: string;
 }) => {
   const [reviews, setReviews] = useState<Review[]>([]);
+  useEffect(() => {
+    const loadReviews = async () => {
+      const res = await getReviews({ productId });
+      setReviews(res.data);
+    };
+    loadReviews();
+  }, [productId]);
 
   const reload = () => {
     console.log("Review Submitted");
@@ -40,7 +58,34 @@ const ReviewList = ({
           to write a review
         </div>
       )}
-      <div className='flex flex-col gap-3'>{/* Reviews here */}</div>
+      <div className='flex flex-col gap-3'>
+        {reviews.map((review) => (
+          <Card key={review.id}>
+            <CardHeader>
+              <div className='flex-between'>
+                <CardTitle> {review.title}</CardTitle>
+              </div>
+              <CardDescription>{review.description}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className='flex space-x-4 text-sm text-muted-foreground'>
+                <Rating value={review.rating} />
+                <div className='flex items-center'>
+                  <UserIcon className='mr-1 h-3 w-3' />
+                  {review.user
+                    ? review.user.name.charAt(0).toUpperCase() +
+                      review.user.name.slice(1)
+                    : ""}
+                </div>
+                <div className='flex items-center'>
+                  <Calendar1 className='mr-1 h-3 w-3' />
+                  {formatDateTime(review.createdAt).dateTime}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 };
