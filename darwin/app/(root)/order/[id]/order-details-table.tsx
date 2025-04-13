@@ -27,15 +27,18 @@ import {
   updateOrderToPaidCOD,
   deliveredOrder,
 } from "@/lib/actions/order-actions";
+import StripePayment from "./stripe-payment";
 
 const OrderDetailsTable = ({
   order,
   paypalClientId,
   isAdmin,
+  stripeClientSecret,
 }: {
   order: Order;
   paypalClientId: string;
   isAdmin: boolean;
+  stripeClientSecret: string | null;
 }) => {
   const {
     id,
@@ -116,7 +119,6 @@ const OrderDetailsTable = ({
         type='button'
         disabled={isPending}
         size='sm'
-        className='ml-1'
         onClick={() =>
           startTransition(async () => {
             const result = await deliveredOrder(order.id);
@@ -243,9 +245,19 @@ const OrderDetailsTable = ({
                   </PayPalScriptProvider>
                 </div>
               )}
+              {!isPaid && paymentMethod === "Stripe" && stripeClientSecret && (
+                <StripePayment
+                  priceInCents={Number(order.totalPrice) * 100}
+                  orderId={order.id}
+                  client_secret={stripeClientSecret}
+                />
+              )}
+
               {/*  */}
-              {isAdmin && !isPaid && <MarkAsPaidButton />}
-              {isAdmin && !isDelivered && <MarkAsDeliveredButton />}
+              <div className='flex justify-center gap-2 mt-5'>
+                {isAdmin && !isPaid && <MarkAsPaidButton />}
+                {isAdmin && !isDelivered && <MarkAsDeliveredButton />}
+              </div>
             </CardContent>
           </Card>
         </div>
