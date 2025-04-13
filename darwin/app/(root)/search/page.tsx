@@ -5,6 +5,7 @@ import {
 } from "@/lib/actions/product.actions";
 import Link from "next/link";
 import { prices, ratings } from "@/lib/constants";
+import { Button } from "@/components/ui/button";
 
 const SearchPage = async (props: {
   searchParams: Promise<{
@@ -136,6 +137,24 @@ const SearchPage = async (props: {
         </div>
       </div>
       <div className='space-y-4 md:col-span-4'>
+        <div className='flex-between flex-col my-4 md:flex-row'>
+          <div className='flex items-center'>
+            {query !== "all" && query !== "" && "Query: " + query}
+            {category !== "all" && category !== "" && " Category: " + category}
+            {price !== "all" && " Price: " + price}
+            {rating !== "all" && " Rating: " + rating + " & up"}
+            &nbsp;
+            {(query !== "all" && query !== "") ||
+            (category !== "all" && category !== "") ||
+            price !== "all" ||
+            rating !== "all" ? (
+              <Button variant={"link"} asChild>
+                <Link href='/search'>clear</Link>
+              </Button>
+            ) : null}
+          </div>
+          <div>{/* Sort */}</div>
+        </div>
         <div className='grid grid-cols-1 gap-4 md:grid-cols-3'>
           {products.data.length === 0 && "No Products Found"}
           {products.data.map((x) => (
