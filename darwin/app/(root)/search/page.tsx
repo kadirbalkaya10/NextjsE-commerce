@@ -4,7 +4,7 @@ import {
   getAllCategories,
 } from "@/lib/actions/product.actions";
 import Link from "next/link";
-import { prices } from "@/lib/constants";
+import { prices, ratings } from "@/lib/constants";
 
 const SearchPage = async (props: {
   searchParams: Promise<{
@@ -60,6 +60,7 @@ const SearchPage = async (props: {
     page: Number(page),
   });
 
+  console.log(products.data);
   const categories = await getAllCategories();
 
   return (
@@ -106,6 +107,28 @@ const SearchPage = async (props: {
                   className={`${price === p.value && "font-bold"}`}
                   href={getFilterUrl({ p: p.value })}>
                   {p.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+        {/* Ratings Range Links */}
+        <div className='text-xl mb-2 mt-3'>Customer Ratings</div>
+        <div>
+          <ul className='space-y-1'>
+            <li>
+              <Link
+                className={`${rating === "all" && "font-bold"}`}
+                href={getFilterUrl({ r: "all" })}>
+                Any
+              </Link>
+            </li>
+            {ratings.map((r) => (
+              <li key={r}>
+                <Link
+                  className={`${rating === r.toString() && "font-bold"}`}
+                  href={getFilterUrl({ r: `${r}` })}>
+                  {`${r} starts & up`}
                 </Link>
               </li>
             ))}
