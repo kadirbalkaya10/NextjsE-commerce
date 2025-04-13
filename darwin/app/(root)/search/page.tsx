@@ -4,7 +4,7 @@ import {
   getAllCategories,
 } from "@/lib/actions/product.actions";
 import Link from "next/link";
-import { prices, ratings } from "@/lib/constants";
+import { prices, ratings, sortProducts } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 
 const SearchPage = async (props: {
@@ -153,7 +153,18 @@ const SearchPage = async (props: {
               </Button>
             ) : null}
           </div>
-          <div>{/* Sort */}</div>
+          <div>
+            {/* Sort */}
+            Sort by{" "}
+            {sortProducts.map((s) => (
+              <Link
+                key={s}
+                className={`mx-2 ${sort == s && "font-bold"}`}
+                href={getFilterUrl({ s: s })}>
+                {s.charAt(0).toUpperCase() + s.slice(1)}
+              </Link>
+            ))}
+          </div>
         </div>
         <div className='grid grid-cols-1 gap-4 md:grid-cols-3'>
           {products.data.length === 0 && "No Products Found"}
